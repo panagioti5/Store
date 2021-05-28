@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  store-app:
+    image: christopher13v/mystore-app-custom
+    container_name: storeapp
+    ports:
+      - "8080:8080"
