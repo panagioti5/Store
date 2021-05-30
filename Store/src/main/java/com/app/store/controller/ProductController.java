@@ -1,6 +1,7 @@
 package com.app.store.controller;
 
 import com.app.store.entities.Product;
+import com.app.store.entities.ProductWrapper;
 import com.app.store.infra.Utils;
 import com.app.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,10 @@ public class ProductController {
         }
         return productRepository.findById(productId).get();
     }
+
+    @PostMapping("/product/saveAll")
+    public void saveAllProducts(@RequestBody ProductWrapper products){
+        productRepository.saveAll(products.getProducts());
+    }
+
 }
