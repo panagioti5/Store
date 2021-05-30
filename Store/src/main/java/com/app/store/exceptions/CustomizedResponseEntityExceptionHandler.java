@@ -31,4 +31,11 @@ public class CustomizedResponseEntityExceptionHandler {
         request.getDescription(false);
         return new ResponseEntity(e.getResponse(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public final ResponseEntity<Object> handleAllExceptions(OrderNotFoundException e, WebRequest request) {
+        request.getDescription(false);
+        return new ResponseEntity(e.getResponse(), HttpStatus.NOT_FOUND);
+    }
+
 }

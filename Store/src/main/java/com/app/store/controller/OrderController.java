@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.rmi.CORBA.Util;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,14 +23,14 @@ import java.util.stream.Collectors;
 @RestController
 public class OrderController {
 
-    private final ProductOrdersRepository productRepository;
+    private final ProductOrdersRepository productOrdersRepository;
     private final ProductRepository productRepo;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
 
     @Autowired
-    public OrderController(ProductOrdersRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository, ProductRepository productRepo) {
-        this.productRepository = productRepository;
+    public OrderController(ProductOrdersRepository productOrdersRepository, OrderRepository orderRepository, CustomerRepository customerRepository, ProductRepository productRepo) {
+        this.productOrdersRepository = productOrdersRepository;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.productRepo = productRepo;
@@ -57,7 +58,7 @@ public class OrderController {
         } else {
             productOrders.setCustomerOrders(order.get());
         }
-        productRepository.save(productOrders);
+        productOrdersRepository.save(productOrders);
     }
 
     @GetMapping("orders/customer/{customerID}")
@@ -76,6 +77,16 @@ public class OrderController {
             throw Utils.getInstance().getCustomerNotFoundException(customerID);
         }
         List<CustomerOrders> customerOrders = orderRepository.findByCustomerID(customerID);
-        return customerOrders.stream().map(productRepository::findByCustomerOrders).flatMap(List::stream).collect(Collectors.toList());
+        return customerOrders.stream().map(productOrdersRepository::findByCustomerOrders).flatMap(List::stream).collect(Collectors.toList());
+    }
+
+    @GetMapping("order/{orderID}/products")
+    public List<Product> getAllProductsFromOrder(@PathVariable("orderID") long orderID){
+        Optional<CustomerOrders> customerOrder = orderRepository.findById(orderID);
+        if (!customerOrder.isPresent()){
+            throw Utils.getInstance().getOrderNotFoundException(orderID);
+        }
+        List<ProductOrders> productOrders = productOrdersRepository.findByCustomerOrders(customerOrder.get());
+        return productRepo.findAllById(productOrders.stream().map(ProductOrders::getProductID).collect(Collectors.toList()));
     }
 }

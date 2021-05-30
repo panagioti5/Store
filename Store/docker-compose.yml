@@ -2,7 +2,7 @@ version: '2'
 
 services:
   store-app:
-    image: panagioti5/store-app:0.0.1
+    image: panagioti5/store-app:0.0.2
     container_name: storeapp
     ports:
       - "8080:8080"

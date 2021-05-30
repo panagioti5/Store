@@ -2,6 +2,7 @@ package com.app.store.infra;
 
 import com.app.store.exceptions.CustomerNotFoundException;
 import com.app.store.exceptions.ExceptionResponse;
+import com.app.store.exceptions.OrderNotFoundException;
 import com.app.store.exceptions.ProductNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -26,5 +27,9 @@ public class Utils {
 
     public ProductNotFoundException getProductNotFoundException(long productID) {
         return new ProductNotFoundException(new ExceptionResponse("No product with ID: " + productID + " found", ErrorCode.PRODUCT_NOT_FOUND.code, new Date()));
+    }
+
+    public OrderNotFoundException getOrderNotFoundException(long orderID) {
+        return new OrderNotFoundException(new ExceptionResponse("No order with ID: " + orderID + " found", ErrorCode.ORDER_NOT_FOUND.code, new Date()));
     }
 }

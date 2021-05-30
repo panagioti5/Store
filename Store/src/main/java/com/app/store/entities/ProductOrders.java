@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class ProductOrders {
 
     @Id
+    @JsonIgnore
     @GeneratedValue
     private Long entryID;
 
@@ -17,6 +18,7 @@ public class ProductOrders {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
+    @JoinColumn(name = "ORDER_ID")
     private CustomerOrders customerOrders;
 
     public Long getProductID() {
