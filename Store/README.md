@@ -1,4 +1,4 @@
-Store Application 
+<b>Store Application</b>
 
 GitHub repository URL: https://github.com/panagioti5/Store 
 
