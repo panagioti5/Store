@@ -1,4 +1,6 @@
-Store Application 
+<b>Store Application</b>
+
+<b>Refer to documentation.pdf</b>
 
 GitHub repository URL: https://github.com/panagioti5/Store 
 
