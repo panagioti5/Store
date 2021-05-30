@@ -1,4 +1,5 @@
 package com.app.store.exceptions;
+import com.app.store.infra.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +15,7 @@ public class CustomizedResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleAllExceptions(ConstraintViolationException e, WebRequest request) {
         StringBuilder sbIssues = new StringBuilder();
         e.getConstraintViolations().forEach(x -> sbIssues.append(x.getMessage()).append(";"));
-        ExceptionResponse exceptionResponse = new ExceptionResponse(sbIssues.toString(), "VAL_13", new Date());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(sbIssues.toString(), ErrorCode.GENERIC_ERROR.code, new Date());
         request.getDescription(false);
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
     }

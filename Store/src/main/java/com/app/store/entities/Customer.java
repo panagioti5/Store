@@ -1,13 +1,12 @@
 package com.app.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -29,7 +28,6 @@ public class Customer {
     @NotNull(message = "Please enter a phone number")
     @Pattern(regexp = "^[9][0-9]{7}$",message = "Your phone number should start with 9 and contains 8 digits")
     private String phone;
-
 
     public Long getCustomerId() {
         return customerId;
@@ -62,4 +60,5 @@ public class Customer {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }

@@ -17,7 +17,7 @@ public class ProductOrders {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private OrderDetails orderDetails;
+    private CustomerOrders customerOrders;
 
     public Long getProductID() {
         return productID;
@@ -27,14 +27,13 @@ public class ProductOrders {
         this.productID = productID;
     }
 
-    public OrderDetails getOrderDetails() {
-        return orderDetails;
+    public CustomerOrders getCustomerOrders() {
+        return customerOrders;
     }
 
-    public void setOrderDetails(OrderDetails orderDetails) {
-        this.orderDetails = orderDetails;
+    public void setCustomerOrders(CustomerOrders customerOrders) {
+        this.customerOrders = customerOrders;
     }
-
 
     public Long getEntryID() {
         return entryID;
@@ -43,4 +42,5 @@ public class ProductOrders {
     public void setEntryID(Long entryID) {
         this.entryID = entryID;
     }
+
 }

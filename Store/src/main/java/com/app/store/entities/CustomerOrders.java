@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class OrderDetails {
+public class CustomerOrders {
 
     @Id
     @Column
@@ -16,9 +16,10 @@ public class OrderDetails {
     @Column
     private Long customerID;
 
-    @OneToMany(mappedBy = "orderDetails")
+    @OneToMany(mappedBy = "customerOrders")
     @JsonIgnore
     private List<ProductOrders> customerProducts;
+
 
     public Long getOrderId() {
         return orderId;
@@ -27,7 +28,6 @@ public class OrderDetails {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
-
 
     public Long getCustomerID() {
         return customerID;
@@ -44,4 +44,5 @@ public class OrderDetails {
     public void setCustomerProducts(List<ProductOrders> customerProducts) {
         this.customerProducts = customerProducts;
     }
+
 }

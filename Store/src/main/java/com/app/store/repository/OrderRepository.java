@@ -1,7 +1,11 @@
 package com.app.store.repository;
 
-import com.app.store.entities.OrderDetails;
+import com.app.store.entities.CustomerOrders;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<OrderDetails, Long> {
+import java.util.List;
+
+public interface OrderRepository extends JpaRepository<CustomerOrders, Long> {
+    List<CustomerOrders> findByCustomerID(Long customerID);
+
 }

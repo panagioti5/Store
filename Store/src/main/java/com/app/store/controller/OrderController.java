@@ -1,23 +1,23 @@
 package com.app.store.controller;
 
 import com.app.store.entities.Customer;
-import com.app.store.entities.OrderDetails;
+import com.app.store.entities.CustomerOrders;
 import com.app.store.entities.Product;
 import com.app.store.entities.ProductOrders;
-import com.app.store.exceptions.CustomerNotFoundException;
-import com.app.store.exceptions.ExceptionResponse;
-import com.app.store.exceptions.ProductNotFoundException;
+import com.app.store.infra.Utils;
 import com.app.store.repository.CustomerRepository;
 import com.app.store.repository.OrderRepository;
 import com.app.store.repository.ProductOrdersRepository;
 import com.app.store.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class OrderController {
@@ -39,25 +39,43 @@ public class OrderController {
     public void saveOrderForCustomer(@PathVariable("orderID") long orderID, @PathVariable("customerID") long customerID, @PathVariable("productID") long productID) {
         Optional<Customer> customer = customerRepository.findById(customerID);
         if (!customer.isPresent()) {
-            throw new CustomerNotFoundException(new ExceptionResponse("No customer with ID: " + customerID + " found", "13", new Date()));
+            throw Utils.getInstance().getCustomerNotFoundException(customerID);
         }
         Optional<Product> productFound = productRepo.findById(productID);
         if (!productFound.isPresent()) {
-            throw new ProductNotFoundException(new ExceptionResponse("No product with ID: " + productID + " found", "13", new Date()));
+            throw Utils.getInstance().getProductNotFoundException(productID);
         }
         ProductOrders productOrders = new ProductOrders();
         productOrders.setProductID(productID);
 
-        Optional<OrderDetails> order = orderRepository.findById(orderID);
+        Optional<CustomerOrders> order = orderRepository.findById(orderID);
         if (!order.isPresent()) {
-            OrderDetails orderDetails = new OrderDetails();
-            orderDetails.setCustomerID(customerID);
-            OrderDetails createdOrder = orderRepository.save(orderDetails);
-            productOrders.setOrderDetails(createdOrder);
-            productRepository.save(productOrders);
+            CustomerOrders customerOrders = new CustomerOrders();
+            customerOrders.setCustomerID(customerID);
+            CustomerOrders createdOrder = orderRepository.save(customerOrders);
+            productOrders.setCustomerOrders(createdOrder);
         } else {
-            productOrders.setOrderDetails(order.get());
-            productRepository.save(productOrders);
+            productOrders.setCustomerOrders(order.get());
         }
+        productRepository.save(productOrders);
+    }
+
+    @GetMapping("orders/customer/{customerID}")
+    public List<CustomerOrders> getOrdersByCustomerID(@PathVariable("customerID") long customerID){
+        Optional<Customer> customer = customerRepository.findById(customerID);
+        if(!customer.isPresent()){
+            throw Utils.getInstance().getCustomerNotFoundException(customerID);
+        }
+        return orderRepository.findByCustomerID(customerID);
+    }
+
+    @GetMapping("products/customer/{customerID}")
+    public List<ProductOrders> getProductsOrdersByCustomerID(@PathVariable("customerID") long customerID){
+        Optional<Customer> customer = customerRepository.findById(customerID);
+        if(!customer.isPresent()){
+            throw Utils.getInstance().getCustomerNotFoundException(customerID);
+        }
+        List<CustomerOrders> customerOrders = orderRepository.findByCustomerID(customerID);
+        return customerOrders.stream().map(productRepository::findByCustomerOrders).flatMap(List::stream).collect(Collectors.toList());
     }
 }

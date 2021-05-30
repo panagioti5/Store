@@ -1,13 +1,11 @@
 package com.app.store.controller;
 
 import com.app.store.entities.Customer;
-import com.app.store.exceptions.CustomerNotFoundException;
-import com.app.store.exceptions.ExceptionResponse;
+import com.app.store.infra.Utils;
 import com.app.store.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -29,7 +27,7 @@ public class CustomerController {
     public void deleteCustomer(@PathVariable("customerId") Long customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (!customer.isPresent()) {
-            throw new CustomerNotFoundException(new ExceptionResponse("No customer with ID: " + customerId + " found", "13", new Date()));
+            throw Utils.getInstance().getCustomerNotFoundException(customerId);
         }
         customerRepository.delete(customer.get());
     }
@@ -38,7 +36,7 @@ public class CustomerController {
     public void updateCustomer(@RequestBody Customer customer) {
         Optional<Customer> customerToUpdate = customerRepository.findById(customer.getCustomerId());
         if (!customerToUpdate.isPresent()) {
-            throw new CustomerNotFoundException(new ExceptionResponse("No customer with ID: " + customer.getCustomerId() + " found", "13", new Date()));
+            throw Utils.getInstance().getCustomerNotFoundException(customer.getCustomerId());
         }
         customerRepository.save(customer);
     }
@@ -47,8 +45,10 @@ public class CustomerController {
     public Customer getCustomer(@PathVariable("customerId") Long customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if (!customer.isPresent()) {
-            throw new CustomerNotFoundException(new ExceptionResponse("No customer with ID: " + customerId + " found", "13", new Date()));
+            throw Utils.getInstance().getCustomerNotFoundException(customerId);
         }
         return customerRepository.findById(customerId).get();
     }
+
+
 }

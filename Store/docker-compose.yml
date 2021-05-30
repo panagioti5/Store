@@ -2,10 +2,7 @@ version: '2'
 
 services:
   store-app:
-    build:
-      context: .
-      dockerfile: storeapp.Dockerfile
-    image: mystore-app-custom
+    image: panagioti5/store-app
     container_name: storeapp
     ports:
       - "8080:8080"
