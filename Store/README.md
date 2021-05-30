@@ -10,30 +10,19 @@ This project is able to Create/Update/Delete/Find Customer and Products. In addi
 
 How to run application: 
 
-Using Docker:  
+<b>Using Docker:</b>
+*   Open cmd 
+*   Find docker-compose.yml file under Store project 
+*   Run 'docker-compose up' docker command to download image from docker hub 
+*   Application is running on http://localhost:8080/ 
 
-Open cmd 
+<b>Using java project:</b>
+*   Clone Project from GitHub 
+*   Build Project 
+*   Run com.app.store.StoreApplication#main 
+*   Application is running on http://localhost:8080/ 
 
-Find docker-compose.yml file under Store project 
-
-Run 'docker-compose up' docker command to download image from docker hub 
-
-Application is running on http://localhost:8080/ 
-
-Using java project: 
-
-Clone Project from GitHub 
-
-Build Project 
-
-Run com.app.store.StoreApplication#main 
-
-Application is running on http://localhost:8080/ 
-
-Add the requests to Postman: 
-
-Open postman 
-
-File - Import – Upload Files 
-
-Select “Store.postman_collection.json” this file is under Store project. 
+<b>Add the requests to Postman:</b>
+*   Open postman 
+*   File - Import – Upload Files 
+*   Select “Store.postman_collection.json” this file is under Store project. 
